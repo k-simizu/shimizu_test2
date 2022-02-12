@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<h1>記事一覧</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>日付</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for article in article_list %}
+    {% if user.get_username == article.author.username %}
+    <tr>
+      <td><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></td>
+      <td>{{ article.date }}</td>
+      <td>{{ article.author }}</td>
+      <td><a href="{% url 'article_update' article.pk %}">編集</a></td>
+      <td><a href="{% url 'article_delete' article.pk %}">削除</a></td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+<p><a href="{% url 'logout' %}">ログアウト</a></p>
+{% else %}
+<p><a href="{% url 'login' %}">ログイン</a></p>
+<p><a href="{% url 'signup' %}">会員登録</a></p>
+{% endif %}
+{% endblock %}
